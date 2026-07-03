@@ -1,5 +1,5 @@
 {
-  "name": "egdesk-tkd",
+  "name": "hakwon",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,14 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@vladmandic/face-api": "^1.7.15",
-    "framer-motion": "^12.38.0",
-    "lucide-react": "^1.14.0",
-    "next": "16.2.6",
-    "playwright": "^1.60.0",
+    "next": "16.2.10",
     "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "xlsx": "^0.18.5"
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@egdesk/next-api-plugin": "^1.5.7",
@@ -25,7 +20,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

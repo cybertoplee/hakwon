@@ -1,7 +1,25 @@
-import { createTable, queryTable, insertRows } from '../../egdesk-helpers';
+import { createTable, queryTable, insertRows, deleteTable, listTables } from '../../egdesk-helpers';
 
 export async function setupDatabase() {
   console.log('Starting database setup...');
+
+  // Clean metadata first if they exist to prevent UNIQUE constraint failures
+  try {
+    const res = await listTables();
+    const tablesToReset = ['classes', 'students', 'attendance_logs', 'payment_records', 'student_classes', 'custom_fields', 'tkd_system_settings'];
+    for (const tableName of tablesToReset) {
+      if (res.tables?.find((t: any) => t.tableName === tableName)) {
+        console.log(`Deleting existing metadata for ${tableName} to prevent conflict...`);
+        try {
+          await deleteTable(tableName);
+        } catch (e: any) {
+          console.error(`Error deleting ${tableName}:`, e.message);
+        }
+      }
+    }
+  } catch (e: any) {
+    console.error('Error listing tables for cleanup:', e.message);
+  }
 
   // 1. Classes Table
   try {
@@ -27,6 +45,7 @@ export async function setupDatabase() {
       { name: 'rank', type: 'TEXT' },
       { name: 'memo', type: 'TEXT' },
       { name: 'face_vector', type: 'TEXT' }, // JSON string of embeddings
+      { name: 'profile_image', type: 'TEXT' },
       { name: 'class_id', type: 'INTEGER' },
     ], { tableName: 'students', uniqueKeyColumns: ['id'] });
     console.log('Table "students" created.');

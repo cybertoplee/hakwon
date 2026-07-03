@@ -265,19 +265,27 @@ export default function AttendanceMonitorPage() {
           for (const detection of resizedDetections) {
             const descriptor = detection.descriptor;
             let bestMatch = { student: null as Student | null, distance: 1.0 };
-
+            console.log(`[FaceAPI] Face detected. Matching with ${students.length} registered students...`);
             for (const student of students) {
               if (!student.face_vector) continue;
               try {
                 const studentVector = new Float32Array(JSON.parse(student.face_vector));
                 const distance = faceapi.euclideanDistance(descriptor, studentVector);
+                console.log(`[FaceAPI] - Distance to ${student.name}: ${distance.toFixed(4)}`);
                 if (distance < bestMatch.distance) {
                   bestMatch = { student, distance };
                 }
-              } catch (e) {}
+              } catch (e) {
+                console.error(`[FaceAPI] Failed to parse face_vector for ${student.name}:`, e);
+              }
             }
 
             const isMatch = bestMatch.student && bestMatch.distance < 0.7; // 임계값을 0.7로 대폭 상향하여 무조건 인식되도록 완화
+            if (bestMatch.student) {
+              console.log(`[FaceAPI] Best match: ${bestMatch.student.name} with distance ${bestMatch.distance.toFixed(4)} (Threshold: 0.7). Match? ${isMatch}`);
+            } else {
+              console.log(`[FaceAPI] No best match found.`);
+            }
             
             // 사이버틱 스캔 타겟팅 박스 직접 그리기
             if (ctx) {

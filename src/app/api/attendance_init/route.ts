@@ -20,6 +20,10 @@ export async function GET(request: Request) {
       count: countRes?.rows?.[0]?.count || 0,
       logs: logsRes?.rows || [],
       settings: settingsRes?.rows || []
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate'
+      }
     });
 
   } catch (error: any) {

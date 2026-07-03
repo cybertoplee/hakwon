@@ -337,6 +337,7 @@ export default function StudentRegisterPage() {
         setStatus('이미 등록된 학생입니다.');
         alert(`이미 '${formData.name}'(생일: ${formData.birthDate}) 학생이 등록되어 있습니다. 중복 등록은 불가능합니다.`);
         setIsCapturing(false);
+        router.back();
         return;
       }
 
@@ -354,6 +355,7 @@ export default function StudentRegisterPage() {
               setStatus('중복된 얼굴 인식됨');
               alert(`해당 얼굴은 이미 '${existingStudent.name}' 관원으로 등록되어 있습니다.\n동일한 얼굴(사진)을 중복해서 등록할 수 없습니다.`);
               setIsCapturing(false);
+              router.back();
               return;
             }
           } catch (e) {}
